@@ -8,7 +8,7 @@ fi
 
 # Liste des fichiers diffusables (racine de /media, hors cover)
 list_files() {
-  find /media -maxdepth 1 -type f \
+  find /media -maxdepth 3 -type f ! -iname 'cover.*' \
     \( -iname '*.mp3' -o -iname '*.m4a' -o -iname '*.aac' -o -iname '*.wav' -o -iname '*.ogg' -o -iname '*.flac' \
        -o -iname '*.mp4' -o -iname '*.mkv' -o -iname '*.mov' -o -iname '*.webm' \) | sort
 }
