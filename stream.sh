@@ -1,5 +1,8 @@
 #!/bin/sh
 URL="rtmp://a.rtmp.youtube.com/live2/${YOUTUBE_STREAM_KEY}"
+DIR="${MEDIA_DIR:-/media}"
+mkdir -p "$DIR"
+chown 1000:1000 "$DIR"
 SCALE="scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,format=yuv420p"
 
 if [ -z "$YOUTUBE_STREAM_KEY" ]; then
@@ -8,7 +11,7 @@ fi
 
 # Liste des fichiers diffusables (racine de /media, hors cover)
 list_files() {
-  find /media -maxdepth 3 -type f ! -iname 'cover.*' \
+  find "$DIR" -maxdepth 3 -type f ! -iname 'cover.*' \
     \( -iname '*.mp3' -o -iname '*.m4a' -o -iname '*.aac' -o -iname '*.wav' -o -iname '*.ogg' -o -iname '*.flac' \
        -o -iname '*.mp4' -o -iname '*.mkv' -o -iname '*.mov' -o -iname '*.webm' \) | sort
 }
@@ -19,8 +22,8 @@ play() {
   case "$(echo "$f" | tr 'A-Z' 'a-z')" in
     *.mp3|*.m4a|*.aac|*.wav|*.ogg|*.flac)
       echo "▶ Audio : $f $LOOP"
-      if [ -f /media/cover.jpg ]; then
-        BG="-loop 1 -framerate 15 -i /media/cover.jpg"
+      if [ -f "$DIR/cover.jpg" ]; then
+        BG="-loop 1 -framerate 15 -i $DIR/cover.jpg"
       else
         BG="-f lavfi -i color=c=black:s=1280x720:r=15"
       fi
@@ -45,7 +48,7 @@ while true; do
   COUNT=$(echo "$FILES" | grep -c . )
 
   if [ "$COUNT" -eq 0 ]; then
-    echo "Aucun fichier dans /media, nouvelle vérification dans 30 s…"
+    echo "Aucun fichier dans $DIR, nouvelle vérification dans 30 s…"
     sleep 30
   elif [ "$COUNT" -eq 1 ]; then
     # Un seul fichier : boucle infinie SANS coupure.

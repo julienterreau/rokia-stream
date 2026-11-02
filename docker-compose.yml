@@ -1,26 +1,38 @@
-services:
-  streamer:
-    build: .
-    restart: unless-stopped
-    environment:
-      - YOUTUBE_STREAM_KEY=${YOUTUBE_STREAM_KEY}
-    volumes:
-      - media:/media
-    mem_limit: 512m
-    cpus: 1.5
+  services:
+    streamer:
+      build: .
+      restart: unless-stopped
+      environment:
+        - YOUTUBE_STREAM_KEY=${YOUTUBE_STREAM_KEY_1}
+        - MEDIA_DIR=/media/playlist-1
+      volumes:
+        - media:/media
+      mem_limit: 512m
+      cpus: 1.2
 
-  files:
-    image: filebrowser/filebrowser:v2
-    restart: unless-stopped
-    environment:
-      - SERVICE_FQDN_FILES_80
-    volumes:
-      - media:/srv
-      - fb-database:/database
-      - fb-config:/config
-    mem_limit: 128m
+    streamer-2:
+      build: .
+      restart: unless-stopped
+      environment:
+        - YOUTUBE_STREAM_KEY=${YOUTUBE_STREAM_KEY_2}
+        - MEDIA_DIR=/media/playlist-2
+      volumes:
+        - media:/media
+      mem_limit: 512m
+      cpus: 1.2
 
-volumes:
-  media:
-  fb-database:
-  fb-config:
+    files:
+      image: filebrowser/filebrowser:v2
+      restart: unless-stopped
+      environment:
+        - SERVICE_FQDN_FILES_80
+      volumes:
+        - media:/srv
+        - fb-database:/database
+        - fb-config:/config
+      mem_limit: 128m
+
+  volumes:
+    media:
+    fb-database:
+    fb-config:
