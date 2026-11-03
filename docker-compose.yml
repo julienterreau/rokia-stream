@@ -5,10 +5,8 @@ services:
     environment:
       - YOUTUBE_STREAM_KEY=${YOUTUBE_STREAM_KEY_1}
       - MEDIA_DIR=/media/playlist-1
-      - VIDEO_HEIGHT=720
     volumes:
       - media:/media
-      - stream-cache:/cache
     mem_limit: 512m
     cpus: 1.2
 
@@ -18,10 +16,8 @@ services:
     environment:
       - YOUTUBE_STREAM_KEY=${YOUTUBE_STREAM_KEY_2}
       - MEDIA_DIR=/media/playlist-2
-      - VIDEO_HEIGHT=720
     volumes:
       - media:/media
-      - stream-cache:/cache
     mem_limit: 512m
     cpus: 1.2
 
@@ -38,6 +34,5 @@ services:
 
 volumes:
   media:
-  stream-cache:
   fb-database:
   fb-config:
