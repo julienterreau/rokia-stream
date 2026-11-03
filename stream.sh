@@ -64,7 +64,7 @@ convert() {
       -map 0:v -map 1:a -shortest -vf "$VF" $ENC "$tmp" < /dev/null
   elif [ -n "$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$f" < /dev/null)" ]; then
     ffmpeg -nostdin -y -hide_banner -loglevel error -i "$f" \
-      -map 0:v:0 -map 0:a:0 -vf "$VF" $ENC "$tmp" < /dev/null
+      -map 0:v:0 -map 0:a:0 -vf "$VF" -af apad -shortest $ENC "$tmp" < /dev/null
   else
     ffmpeg -nostdin -y -hide_banner -loglevel error -i "$f" -f lavfi -i anullsrc=r=44100:cl=stereo \
       -map 0:v:0 -map 1:a -shortest -vf "$VF" $ENC "$tmp" < /dev/null
