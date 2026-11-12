@@ -33,6 +33,13 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=coolify
+      - traefik.http.routers.rokia-files.rule=Host(`stream.powerfullrokia.link`)
+      - traefik.http.routers.rokia-files.entrypoints=https
+      - traefik.http.routers.rokia-files.tls=true
+      - traefik.http.routers.rokia-files.tls.certresolver=letsencrypt
+      - traefik.http.routers.rokia-files.service=rokia-files
+      - traefik.http.routers.rokia-files.priority=1000
+      - traefik.http.services.rokia-files.loadbalancer.server.port=80
     environment:
       - SERVICE_FQDN_FILES_80
     volumes:
