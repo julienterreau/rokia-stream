@@ -23,6 +23,9 @@ services:
 
   files:
     image: filebrowser/filebrowser:v2
+    # Depuis la 2.33 l'image tourne en 1000:1000 et ne peut plus écrire
+    # dans les volumes créés en root : le conteneur quitte, Coolify renvoie 503.
+    user: "0:0"
     expose:
       - "80"
     restart: unless-stopped
