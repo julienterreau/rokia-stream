@@ -23,6 +23,8 @@ services:
 
   files:
     image: filebrowser/filebrowser:v2
+    expose:
+      - "80"
     restart: unless-stopped
     environment:
       - SERVICE_FQDN_FILES_80
