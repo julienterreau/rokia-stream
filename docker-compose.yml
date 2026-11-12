@@ -23,10 +23,16 @@ services:
 
   files:
     image: filebrowser/filebrowser:v2
-    # Depuis la 2.33 l'image tourne en 1000:1000 et ne peut plus écrire
-    # dans les volumes créés en root : le conteneur quitte, Coolify renvoie 503.
+    # L'image récente refuse d'écrire dans les volumes créés en root.
     user: "0:0"
     restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - coolify
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=coolify
     environment:
       - SERVICE_FQDN_FILES_80
     volumes:
@@ -39,3 +45,8 @@ volumes:
   media:
   fb-database:
   fb-config:
+
+networks:
+  coolify:
+    external: true
+    name: coolify
